@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="manifest" href="./manifest.json">
+  <title>Web Rating!</title>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+    function Login() {
+		
+		$username = $("#txtusername").val();
+		$passwd= $("#txtpassword").val();
+		
+			$.ajax({
+            type: 'POST',
+            url: 'http://localhost/WebRating/CheckUser.php',
+            dataType: 'text',
+			contentType: "application/json",
+            async: false,
+			data : JSON.stringify({'user': $username,'passwd': $passwd}),
+            success: function (resp) {
+				if(resp){ 					
+					const obj = JSON.parse(resp);
+					if (obj.success == "Yes")
+						window.location.href = "WeRating.html";
+					else
+						$("#myDialogText").text("Login Failed");
+               }				
+            },
+            error: function (ts) {
+				$("#myDialogText").text("Login Failed");
+            }
+        });
+        };
+		
+    window.addEventListener('load', () => {
+      registerSW();
+    });
+    
+		async function registerSW() {
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+    } catch (e) {
+      console.log(`SW registration failed`);
+    }
+  }
+}
+
+    </script>
+	
+  <div class="log-form">
+  <h2>Login to your account</h2>
+  <h2><div id="myDialog"><div id="myDialogText"></div></div></h2>
+  <form>
+    <input type="text" title="username" placeholder="username" id="txtusername"/>
+    <input type="password" title="username" placeholder="password" id="txtpassword"/>
+    <button type="button" class="btn" onclick="Login()">Login</button>	            
+    <a class="forgot" href="http://localhost/WebRating/SignUp.html">New? Sign Up</a>
+  </form>
+</div><!--end log form -->
+
+</body>
+
+</html>
+	  

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="./style.css">
+  <link rel="manifest" href="./manifest.json">
+  <title>Web Rating!</title>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+		
+    function SignUp() {
+		
+		$username = $("#txtusername").val();
+		$passwd= $("#txtpassword").val();
+		$fname = $("#txtFName").val();
+		$lname= $("#txtLName").val();
+		$email = $("#txtEmail").val();
+		$addr= $("#txtAddr").val();
+			
+			$.ajax({
+            type: 'POST',
+            url: 'http://localhost/WebRating/SignUp.php',
+            dataType: 'text',
+			contentType: "application/json",
+            async: false,
+			data : JSON.stringify({'username': $username,'passwd': $passwd,'fname': $fname,'lname': $lname,'email': $email,'addr': $addr}),
+            success: function (resp) {
+					const obj = JSON.parse(resp);
+					if (obj.message == "Success")
+						$("#myDialogText").text("Registration Complete.");
+					else
+						$("#myDialogText").text("Registration Failed");
+               				
+            },
+            error: function (ts) {
+                $("#myDialogText").text("Registration Failed");				
+            }
+        });
+        };
+    
+      window.addEventListener('load', () => {
+      registerSW();
+    });
+    
+		async function registerSW() {
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+    } catch (e) {
+      console.log(`SW registration failed`);
+    }
+  }
+}
+    </script>
+	
+  <div class="log-form">
+  <h2>Registration</h2>
+  <h2><div id="myDialogText"></div></h2>
+  <form>
+    <input type="text" title="username" placeholder="Username" id="txtusername"/>
+    <input type="password" title="passwd" placeholder="Password" id="txtpassword"/>
+	<input type="password" title="cpasswd" placeholder="Confirm Password" id="txtcpassword"/>
+	<input type="text" title="FName" placeholder="First Name" id="txtFName"/>
+	<input type="text" title="LName" placeholder="Last Name" id="txtLName"/>
+	<input type="text" title="Email" placeholder="Email" id="txtEmail"/>
+	<input type="text" title="Addr" placeholder="Address" id="txtAddr"/>
+    <button type="button" class="btn" onclick="SignUp()">Submit</button>	
+	<a class="forgot" href="http://localhost/WebRating/index.html">Login</a>
+  </form>
+</div><!--end log form -->
+
+</body>
+
+</html>
+	  

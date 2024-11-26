@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="manifest" href="./manifest.json">
+  <title>Web Rating!</title>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+    function RateFilm() {
+		
+		$filmname = $("#filmname").val();
+		$Comments= $("#Comments").val();
+		$ratings =  $("input[name='rating']:checked").val();
+		
+		//alert($filmname);
+		//alert($ratings);
+		//alert($Comments);
+		
+			$.ajax({
+            type: 'POST',
+            url: 'http://localhost/WebRating/PostRating.php',
+            dataType: 'text',
+			contentType: "application/json",
+            async: false,
+			data : JSON.stringify({'filmname': $filmname,'rating': $ratings,'Comment': $Comments}),
+            success: function (resp) {
+				//alert(resp);
+            },
+            error: function (ts) {
+                //alert(ts.responseText);
+				
+            }
+        });
+        };
+
+        window.addEventListener('load', () => {
+      registerSW();
+    });
+    
+		async function registerSW() {
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+    } catch (e) {
+      console.log(`SW registration failed`);
+    }
+  }
+}
+    </script>
+	
+  <div class="log-form">
+  <h2>Rate Film</h2>
+ <img src="terminator.png" alt="Terminator" width="200" height="200">
+  <form>
+  
+  <p>
+	<label for="filmname">Film Name:</label>
+	<input type="text" id="filmname">
+  </p>
+	<p>
+	<label">1</label><input type="radio" name="rating" value="1">
+	<label">2</label><input type="radio" name="rating" value="2">
+	<label">3</label><input type="radio" name="rating" value="3">
+	<label">4</label><input type="radio" name="rating" value="4">
+	<label">5</label><input type="radio" name="rating" value="5">
+	</p>
+	
+	<p><label for="Comments">Comments:</label></p>
+	<textarea id="Comments" name="Comments" rows="4" cols="50"></textarea>
+    
+    <p><button type="button" class="btn" onclick="RateFilm()">Submit</button></p>	            
+
+  </form>
+</div><!--end log form -->
+
+</body>
+
+</html>
+	  
