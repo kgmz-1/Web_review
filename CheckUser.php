@@ -15,10 +15,10 @@ switch ($method) {
 function handleGet($conn,$input) {
     $sql = "SELECT `Passwd` FROM tab_user where UserName='".$input['user']."'";
 	file_put_contents("Log.txt", $sql);
-	$result = mysqli_query($conn, $sql);
+	$result = $conn -> query($sql);
 
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
+	if ($result -> num_rows> 0) {
+		$row = $result -> fetch_assoc();
 		if(password_verify($input['passwd'], $row["Passwd"]))
 	  		echo json_encode(['success' => 'Yes']);
 		else
@@ -26,8 +26,8 @@ function handleGet($conn,$input) {
 	} else {
 	  echo json_encode(['success' => 'No']);
 	}
-
-	mysqli_close($conn);
+	$result -> free_result();
+	$conn -> close();
 }
 
 ?>

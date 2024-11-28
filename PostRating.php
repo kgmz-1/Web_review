@@ -13,13 +13,13 @@ switch ($method) {
 
 
 function handlePost($conn, $input) {
-    $sql = "INSERT INTO tab_rating (FilmName, Rating, Comment,ImgSrc) VALUES ('".$input['filmname']."','".$input['rating']."','".$input['Comment']."','".$input['ImgSrc']."')";
-    if (mysqli_query($conn, $sql)) {
+    $sql = "INSERT INTO tab_rating (FilmName, Rating, Comment,ImgSrc) VALUES ('".$input['filmname']."','".$input['rating']."','".$input['Comment']."','terminator.png')";
+    if ($conn -> query($sql)) {
 		echo json_encode(['message' => 'Success']);
 	} else {
 		echo json_encode(['message' => 'Failed']);
 	}
-	mysqli_close($conn);
+	$conn -> close();
 }
 
 ?>

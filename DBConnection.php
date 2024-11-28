@@ -2,13 +2,15 @@
 $servername = "localhost";
 $username = "sayaan";
 $password = "sayaan";
-$dbname = "WebRating";
+$dbname = "WebRatingProj";
 
 // Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if (!$conn) {
-  die("Connection failed: " . mysqli_connect_error());
+if ($conn -> connect_errno) {
+  die("Connection failed: " . $conn -> connect_errno);
 }
-
+/*else { 
+  die("Connection success: ");
+  }*/
 ?>

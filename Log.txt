@@ -1,1 +1,1 @@
-SELECT `Passwd` FROM tab_user where UserName='sayaan'
+SELECT `Passwd` FROM tab_user where UserName='Nur'
