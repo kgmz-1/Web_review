@@ -9,7 +9,34 @@
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
-    function Login() {
+
+    function Login(){
+      $username = $("#txtusername").val();
+		  $pcode= $("#txtpasscode").val();
+		
+			$.ajax({
+            type: 'POST',
+            url: 'http://localhost/WebRating/CheckPCode.php',
+            dataType: 'text',
+			      contentType: "application/json",
+            async: false,
+			      data : JSON.stringify({'user': $username,'pcode': $pcode}),
+            success: function (resp) {
+            if(resp){ 					
+              const obj = JSON.parse(resp);
+              if (obj.success == "Yes")
+                window.location.href = "http://localhost/WebRating/WeRating.html?logname="+$username;
+              else
+                $("#myDialogText").text("Login Failed");
+                  }				
+              },
+                error: function (ts) {
+            $("#myDialogText").text("Login Failed");
+                }
+            });
+    }
+
+    function GetpCode() {
 		
 		$username = $("#txtusername").val();
 		$passwd= $("#txtpassword").val();
@@ -18,22 +45,22 @@
             type: 'POST',
             url: 'http://localhost/WebRating/CheckUser.php',
             dataType: 'text',
-			contentType: "application/json",
+			      contentType: "application/json",
             async: false,
-			data : JSON.stringify({'user': $username,'passwd': $passwd}),
+			      data : JSON.stringify({'user': $username,'passwd': $passwd}),
             success: function (resp) {
-				if(resp){ 					
-					const obj = JSON.parse(resp);
-					if (obj.success == "Yes")
-						window.location.href = "WeRating.html";
-					else
-						$("#myDialogText").text("Login Failed");
-               }				
-            },
-            error: function (ts) {
-				$("#myDialogText").text("Login Failed");
-            }
-        });
+            if(resp){ 					
+              const obj = JSON.parse(resp);
+              if (obj.success == "Yes")
+                $("#myPDialogText").text("Please enter the passcode sent to your registered email address.");
+              else
+                $("#myDialogText").text("Incorrect username or password");
+                  }				
+                },
+                error: function (ts) {
+            $("#myDialogText").text("Incorrect username or password");
+                }
+            });
         };
 		
     window.addEventListener('load', () => {
@@ -50,15 +77,19 @@
   }
 }
 
-    </script>
+</script>
 	
   <div class="log-form">
   <h2>Login to your account</h2>
   <h2><div id="myDialog"><div id="myDialogText"></div></div></h2>
   <form>
-    <input type="text" title="username" placeholder="username" id="txtusername"/>
+    <input type="text" title="username" placeholder="username" id="txtusername" border="1px solid"/>
     <input type="password" title="username" placeholder="password" id="txtpassword"/>
-    <button type="button" class="btn" onclick="Login()">Login</button>	            
+    <button type="button" class="btn" onclick="GetpCode()">Get Passcode</button>
+
+    <p><h2><div id="myPDialog"><div id="myPDialogText"></div></div></h2></p>
+    <input type="text" title="pcode" placeholder="passcode" id="txtpasscode"/>
+    <button type="button" class="btn" onclick="Login()">Login</button>	
     <a class="forgot" href="http://localhost/WebRating/SignUp.html">New? Sign Up</a>
   </form>
 </div><!--end log form -->

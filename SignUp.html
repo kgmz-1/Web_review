@@ -13,13 +13,52 @@
 		
     function SignUp() {
 		
-		$username = $("#txtusername").val();
-		$passwd= $("#txtpassword").val();
-		$fname = $("#txtFName").val();
-		$lname= $("#txtLName").val();
-		$email = $("#txtEmail").val();
-		$addr= $("#txtAddr").val();
+      $username = $("#txtusername").val();
+      $passwd= $("#txtpassword").val();
+      $cpasswd= $("#txtcpassword").val();
+      $fname = $("#txtFName").val();
+      $lname= $("#txtLName").val();
+      $email = $("#txtEmail").val();
+      $addr= $("#txtAddr").val();
 			
+      if($passwd.localeCompare($cpasswd) != 0) {
+        $("#myDialogText").text("Passwords don't match");
+        return;
+      }
+
+      if($username === undefined || $username === null || $username.length === 0) {
+        $("#myDialogText").text("Username missing. Please check.");
+        return;
+      }
+      if($passwd === undefined || $passwd === null || $passwd.length === 0) {
+        $("#myDialogText").text("Password missing. Please check.");
+        return;
+      }
+      if($fname === undefined || $fname === null || $fname.length === 0) {
+        $("#myDialogText").text("First name missing. Please check.");
+        return;
+      }
+      if($lname === undefined || $lname === null || $lname.length === 0) {
+        $("#myDialogText").text("Last name missing. Please check.");
+        return;
+      }
+      if($email === undefined || $email === null || $email.length === 0) {
+        $("#myDialogText").text("Email missing. Please check.");
+        return;
+      }
+      else {
+        if($email.indexOf("@") == -1) {
+          $("#myDialogText").text("Email is not valid.");
+          return;
+        }
+      }
+      
+      if($addr === undefined || $addr === null || $addr.length === 0) {
+        $("#myDialogText").text("Address missing. Please check.");
+        return;
+      }
+
+      
 			$.ajax({
             type: 'POST',
             url: 'http://localhost/WebRating/SignUp.php',
@@ -39,21 +78,21 @@
                 $("#myDialogText").text("Registration Failed");				
             }
         });
-        };
+      };
     
       window.addEventListener('load', () => {
-      registerSW();
-    });
+        //registerSW();
+      });
     
 		async function registerSW() {
-  if ('serviceWorker' in navigator) {
-    try {
-      await navigator.serviceWorker.register('./sw.js');
-    } catch (e) {
-      console.log(`SW registration failed`);
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator.serviceWorker.register('./sw.js');
+        } catch (e) {
+          console.log(`SW registration failed`);
+        }
+      }
     }
-  }
-}
     </script>
 	
   <div class="log-form">
@@ -67,7 +106,7 @@
 	<input type="text" title="LName" placeholder="Last Name" id="txtLName"/>
 	<input type="text" title="Email" placeholder="Email" id="txtEmail"/>
 	<input type="text" title="Addr" placeholder="Address" id="txtAddr"/>
-    <button type="button" class="btn" onclick="SignUp()">Submit</button>	
+    <button type="button" class="btn" onclick="SignUp()">Sign Up</button>
 	<a class="forgot" href="http://localhost/WebRating/index.html">Login</a>
   </form>
 </div><!--end log form -->
