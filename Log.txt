@@ -1,1 +1,0 @@
-SELECT `Passwd` FROM tab_user where UserName='Nur'
